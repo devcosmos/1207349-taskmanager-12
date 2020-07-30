@@ -1,3 +1,5 @@
+"use strict";
+
 const TASK_COUNT = 3;
 
 const createMenuTemplate = () => {
@@ -105,7 +107,7 @@ const createBoardTemplate = () => {
   );
 };
 
-const createSortingListTemplate = () => {
+const createSortingsTemplate = () => {
   return (
     `<div class="board__filter-list">
       <a href="#" class="board__filter">SORT BY DEFAULT</a>
@@ -373,7 +375,7 @@ const createLoadMoreButtonTemplate = () => {
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
-}
+};
 
 const siteMainElement = document.querySelector(`.main`);
 const siteHeaderElement = siteMainElement.querySelector(`.main__control`);
@@ -383,13 +385,13 @@ render(siteMainElement, createFilterTemplate(), `beforeend`);
 render(siteMainElement, createBoardTemplate(), `beforeend`);
 
 const boardElement = siteMainElement.querySelector(`.board`);
-const taskListElement = boardElement.querySelector(`.board__tasks`);
+const tasksElement = boardElement.querySelector(`.board__tasks`);
 
-render(boardElement, createSortingListTemplate(), `afterbegin`);
-render(taskListElement, createTaskEditTemplate(), `beforeend`);
+render(boardElement, createSortingsTemplate(), `afterbegin`);
+render(tasksElement, createTaskEditTemplate(), `beforeend`);
 
 for (let i = 0; i < TASK_COUNT; i++) {
-  render(taskListElement, createTaskTemplate(), `beforeend`);
-};
+  render(tasksElement, createTaskTemplate(), `beforeend`);
+}
 
-render(taskListElement, createLoadMoreButtonTemplate(), `beforeend`);
+render(boardElement, createLoadMoreButtonTemplate(), `beforeend`);
