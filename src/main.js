@@ -1,15 +1,8 @@
 import {createMenuTemplate} from "./view/menu.js";
 import {createFilterTemplate} from "./view/filter.js";
+import {createBoardTemplate} from "./view/board.js";
 
 const TASK_COUNT = 3;
-
-const createBoardTemplate = () => {
-  return (
-    `<section class="board container">
-      <div class="board__tasks"></div>
-    </section>`
-  );
-};
 
 const createSortingsTemplate = () => {
   return (
