@@ -4,14 +4,9 @@ import {createBoardTemplate} from "./view/board.js";
 import {createSortingsTemplate} from "./view/sortings.js";
 import {createTaskTemplate} from "./view/task.js";
 import {createTaskEditTemplate} from "./view/task-edit.js";
+import {createLoadMoreButtonTemplate} from "./view/load-more-button.js";
 
 const TASK_COUNT = 3;
-
-const createLoadMoreButtonTemplate = () => {
-  return (
-    `<button class="load-more" type="button">load more</button>`
-  );
-};
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
