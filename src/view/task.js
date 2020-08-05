@@ -16,7 +16,7 @@ const isRepeating = (repeatingDays) => {
 
 
 export const createTaskTemplate = (task) => {
-  const {description, dueDate, color, repeatingDays} = task;
+  const {description, dueDate, color, repeatingDays, isArchive, isFavorite} = task;
 
   const date = dueDate !== null
     ? dueDate.toLocaleString(`ru-RU`, {day: `numeric`, month: `long`})
@@ -30,6 +30,14 @@ export const createTaskTemplate = (task) => {
     ? `card--repeat`
     : ``;
 
+  const archiveClassName = isArchive
+    ? `card__btn--archive card__btn--disabled`
+    : `card__btn--archive`;
+
+  const favoriteClassName = isFavorite
+    ? `card__btn--favorites card__btn--disabled`
+    : `card__btn--favorites`;
+
   return (
     `<article class="card card--${color} ${deadlineClassName} ${repeatingClassName}">
       <div class="card__form">
@@ -38,12 +46,12 @@ export const createTaskTemplate = (task) => {
             <button type="button" class="card__btn card__btn--edit">
               edit
             </button>
-            <button type="button" class="card__btn card__btn--archive">
+            <button type="button" class="card__btn ${archiveClassName}">
               archive
             </button>
             <button
               type="button"
-              class="card__btn card__btn--favorites card__btn--disabled"
+              class="card__btn ${favoriteClassName}"
             >
               favorites
             </button>
