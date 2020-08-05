@@ -9,7 +9,7 @@ import {generateTask} from "./mock/task";
 
 const TASK_COUNT = 3;
 
-const tasks = new Array(TASK_COUNT).map(generateTask);
+const tasks = new Array(TASK_COUNT).fill().map(generateTask);
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
