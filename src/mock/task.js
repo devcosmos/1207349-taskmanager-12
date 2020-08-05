@@ -5,9 +5,21 @@ const getRandomInteger = (a = 0, b = 1) => {
   return Math.floor(lower + Math.random() * (upper - lower + 1));
 };
 
+const generateDescription = () => {
+  const description = [
+    `Изучить теорию`,
+    `Сделать домашку`,
+    `Пройти интенсив на соточку`
+  ];
+
+  const randomIndex = getRandomInteger(0, description.length - 1);
+
+  return description[randomIndex];
+};
+
 const generateTask = () => {
   return {
-    description: ``,
+    description: generateDescription(),
     dueDate: null,
     repeatingDays: {
       mo: false,
