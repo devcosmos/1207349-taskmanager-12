@@ -10,9 +10,13 @@ const isExpired = (dueDate) => {
   return currentDate.getTime() > dueDate.getTime();
 };
 
+const isRepeating = (repeatingDays) => {
+  return Object.values(repeatingDays).some(Boolean);
+};
+
 
 export const createTaskTemplate = (task) => {
-  const {description, dueDate, color} = task;
+  const {description, dueDate, color, repeatingDays} = task;
 
   const date = dueDate !== null
     ? dueDate.toLocaleString(`ru-RU`, {day: `numeric`, month: `long`})
@@ -22,8 +26,12 @@ export const createTaskTemplate = (task) => {
     ? `card--deadline`
     : ``;
 
+  const repeatingClassName = isRepeating(repeatingDays)
+    ? `card--repeat`
+    : ``;
+
   return (
-    `<article class="card card--${color} ${deadlineClassName}">
+    `<article class="card card--${color} ${deadlineClassName} ${repeatingClassName}">
       <div class="card__form">
         <div class="card__inner">
           <div class="card__control">
