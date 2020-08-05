@@ -18,7 +18,7 @@ const generateDescription = () => {
 };
 
 const generateDate = () => {
-  const isDate = Boolean(getRandomInteger(0, 1));
+  const isDate = Boolean(getRandomInteger());
 
   if (!isDate) {
     return null;
@@ -34,21 +34,26 @@ const generateDate = () => {
   return new Date(currentDate);
 };
 
+const generateRepeating = () => {
+  return {
+    mo: false,
+    tu: Boolean(getRandomInteger()),
+    we: false,
+    th: Boolean(getRandomInteger()),
+    fr: false,
+    sa: Boolean(getRandomInteger()),
+    su: false
+  };
+};
+
 export const generateTask = () => {
   const dueDate = generateDate();
+  const repeatingDays = generateRepeating();
 
   return {
     description: generateDescription(),
     dueDate,
-    repeatingDays: {
-      mo: false,
-      tu: false,
-      we: false,
-      th: false,
-      fr: false,
-      sa: false,
-      su: false
-    },
+    repeatingDays,
     color: ``,
     isFavorite: false,
     isArchive: false
