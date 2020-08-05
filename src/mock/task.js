@@ -46,6 +46,13 @@ const generateRepeating = () => {
   };
 };
 
+const getRandomColor = () => {
+  const colors = [`black`, `yellow`, `blue`, `green`, `pink`];
+  const randomIndex = getRandomInteger(0, colors.length - 1);
+
+  return colors[randomIndex];
+};
+
 export const generateTask = () => {
   const dueDate = generateDate();
   const repeatingDays = dueDate === null
@@ -64,8 +71,8 @@ export const generateTask = () => {
     description: generateDescription(),
     dueDate,
     repeatingDays,
-    color: ``,
-    isFavorite: false,
-    isArchive: false
+    color: getRandomColor(),
+    isFavorite: Boolean(getRandomInteger()),
+    isArchive: Boolean(getRandomInteger())
   };
 };
