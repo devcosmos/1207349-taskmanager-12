@@ -5,6 +5,7 @@ import {createSortingsTemplate} from "./view/sortings";
 import {createTaskTemplate} from "./view/task";
 import {createTaskEditTemplate} from "./view/task-edit";
 import {createLoadMoreButtonTemplate} from "./view/load-more-button";
+import {generateTask} from "./mock/task";
 
 const TASK_COUNT = 3;
 

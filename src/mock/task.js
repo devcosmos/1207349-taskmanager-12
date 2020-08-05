@@ -34,7 +34,7 @@ const generateDate = () => {
   return new Date(currentDate);
 };
 
-const generateTask = () => {
+export const generateTask = () => {
   const dueDate = generateDate();
 
   return {
