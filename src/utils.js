@@ -4,3 +4,14 @@ export const getRandomInteger = (a = 0, b = 1) => {
 
   return Math.floor(lower + Math.random() * (upper - lower + 1));
 };
+
+export const isExpired = (dueDate) => {
+  if (dueDate === null) {
+    return false;
+  }
+
+  let currentDate = new Date();
+  currentDate.setHours(23, 59, 59, 999);
+
+  return currentDate.getTime() > dueDate.getTime();
+};

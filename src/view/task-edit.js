@@ -1,16 +1,5 @@
 import {COLORS} from "../const.js";
-
-const isExpired = (dueDate) => {
-  if (!dueDate) {
-    return false;
-  }
-
-  const currentDate = new Date();
-
-  currentDate.setHours(23, 59, 59, 999);
-
-  return currentDate > dueDate.getTime();
-};
+import {isExpired} from "../utils.js";
 
 const isRepeating = (repeatingDays) => {
   return Object.values(repeatingDays).some(Boolean);
