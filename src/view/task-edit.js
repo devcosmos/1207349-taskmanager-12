@@ -1,3 +1,15 @@
+const isExpired = (dueDate) => {
+  if (!dueDate) {
+    return false;
+  }
+
+  const currentDate = new Date();
+
+  currentDate.setHours(23, 59, 59, 999);
+
+  return currentDate > dueDate.getTime();
+};
+
 const createTaskEditDateTemplate = (dueDate) => {
   return (
     `<button class="card__date-deadline-toggle" type="button">
@@ -39,10 +51,14 @@ export const createTaskEditTemplate = (task = {}) => {
     isArchive = false,
   } = task;
 
-  const dateTemplate = createTaskEditDateTemplate();
+  const deadlineClassName = isExpired(dueDate)
+    ? `card--deadline`
+    : ``;
+
+  const dateTemplate = createTaskEditDateTemplate(dueDate);
 
   return (
-    `<article class="card card--edit card--yellow card--repeat">
+    `<article class="card card--edit card--${color} ${deadlineClassName}">
       <form class="card__form" method="get">
         <div class="card__inner">
           <div class="card__color-bar">
@@ -57,7 +73,7 @@ export const createTaskEditTemplate = (task = {}) => {
                 class="card__text"
                 placeholder="Start typing your text here..."
                 name="text"
-              >This is example of task edit. You can set date and chose repeating days and color.</textarea>
+              >${description}</textarea>
             </label>
           </div>
 
