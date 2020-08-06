@@ -6,10 +6,12 @@ import {createTaskTemplate} from "./view/task";
 import {createTaskEditTemplate} from "./view/task-edit";
 import {createLoadMoreButtonTemplate} from "./view/load-more-button";
 import {generateTask} from "./mock/task";
+import {generateFilter} from "./mock/filter";
 
 const TASK_COUNT = 4;
 
 const tasks = new Array(TASK_COUNT).fill().map(generateTask);
+const filters = generateFilter(tasks);
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
