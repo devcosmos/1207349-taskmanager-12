@@ -10,6 +10,10 @@ const isExpired = (dueDate) => {
   return currentDate > dueDate.getTime();
 };
 
+const isRepeating = (repeatingDays) => {
+  return Object.values(repeatingDays).some(Boolean);
+};
+
 const createTaskEditDateTemplate = (dueDate) => {
   return (
     `<button class="card__date-deadline-toggle" type="button">
@@ -55,10 +59,14 @@ export const createTaskEditTemplate = (task = {}) => {
     ? `card--deadline`
     : ``;
 
+  const repeatingClassName = isRepeating(repeatingDays)
+    ? `card--repeat`
+    : ``;
+
   const dateTemplate = createTaskEditDateTemplate(dueDate);
 
   return (
-    `<article class="card card--edit card--${color} ${deadlineClassName}">
+    `<article class="card card--edit card--${color} ${deadlineClassName} ${repeatingClassName}">
       <form class="card__form" method="get">
         <div class="card__inner">
           <div class="card__color-bar">
