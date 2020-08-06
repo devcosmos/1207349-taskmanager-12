@@ -1,3 +1,5 @@
+import {COLORS} from "../const.js";
+
 const isExpired = (dueDate) => {
   if (!dueDate) {
     return false;
@@ -65,11 +67,10 @@ const createTaskEditRepeatingTemplate = (repeatingDays) => {
 };
 
 const createTaskEditColorsTemplate = (currentColor) => {
-  const colors = [`black`, `yellow`, `blue`, `green`, `pink`];
 
   return (
     `<div class="card__colors-wrap">
-      ${colors.map((color) => `<input
+      ${COLORS.map((color) => `<input
         type="radio"
         id="color-${color}"
         class="card__color-input card__color-input--${color} visually-hidden"
