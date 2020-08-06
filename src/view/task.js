@@ -1,9 +1,5 @@
-import {isExpired} from "../utils.js";
-
-const isRepeating = (repeatingDays) => {
-  return Object.values(repeatingDays).some(Boolean);
-};
-
+import {isExpired} from "../utils";
+import {isRepeating} from "../utils";
 
 export const createTaskTemplate = (task) => {
   const {description, dueDate, color, repeatingDays, isArchive, isFavorite} = task;

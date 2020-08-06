@@ -15,3 +15,7 @@ export const isExpired = (dueDate) => {
 
   return currentDate.getTime() > dueDate.getTime();
 };
+
+export const isRepeating = (repeatingDays) => {
+  return Object.values(repeatingDays).some(Boolean);
+};

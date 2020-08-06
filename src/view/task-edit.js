@@ -1,9 +1,6 @@
-import {COLORS} from "../const.js";
-import {isExpired} from "../utils.js";
-
-const isRepeating = (repeatingDays) => {
-  return Object.values(repeatingDays).some(Boolean);
-};
+import {COLORS} from "../const";
+import {isExpired} from "../utils";
+import {isRepeating} from "../utils";
 
 const createTaskEditDateTemplate = (dueDate) => {
   return (
