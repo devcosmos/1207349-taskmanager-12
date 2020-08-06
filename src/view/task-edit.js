@@ -99,9 +99,7 @@ export const createTaskEditTemplate = (task = {}) => {
       sa: false,
       su: false
     },
-    color = `black`,
-    isFavorite = false,
-    isArchive = false,
+    color = `black`
   } = task;
 
   const deadlineClassName = isExpired(dueDate)
