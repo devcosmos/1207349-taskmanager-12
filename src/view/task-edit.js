@@ -1,6 +1,5 @@
 import {COLORS} from "../const";
-import {isExpired} from "../utils";
-import {isRepeating} from "../utils";
+import {isExpired, isRepeating, getFormattingDueDate} from "../utils";
 
 const createTaskEditDateTemplate = (dueDate) => {
   return (
@@ -16,7 +15,7 @@ const createTaskEditDateTemplate = (dueDate) => {
             type="text"
             placeholder=""
             name="date"
-            value="${dueDate.toLocaleString(`ru-RU`, {day: `numeric`, month: `long`})}"
+            value="${getFormattingDueDate(dueDate)}"
           />
         </label>
       </fieldset>`

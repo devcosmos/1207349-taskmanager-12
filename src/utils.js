@@ -19,3 +19,7 @@ export const isExpired = (dueDate) => {
 export const isRepeating = (repeatingDays) => {
   return Object.values(repeatingDays).some(Boolean);
 };
+
+export const getFormattingDueDate = (date) => {
+  return date.toLocaleString(`ru-RU`, {day: `numeric`, month: `long`});
+};
