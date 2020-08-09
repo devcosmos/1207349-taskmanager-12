@@ -1,16 +1,16 @@
-import {getRandomInteger} from "../utils";
 import {COLORS} from "../const";
+import {getRandomInteger} from "../utils";
 
 const generateDescription = () => {
-  const description = [
+  const DESCRIPTION = [
     `Изучить теорию`,
     `Сделать домашку`,
     `Пройти интенсив на соточку`
   ];
 
-  const randomIndex = getRandomInteger(0, description.length - 1);
+  const randomIndex = getRandomInteger(0, DESCRIPTION.length - 1);
 
-  return description[randomIndex];
+  return DESCRIPTION[randomIndex];
 };
 
 const generateDate = () => {
@@ -27,18 +27,18 @@ const generateDate = () => {
   currentDate.setHours(23, 59, 59, 999);
   currentDate.setDate(currentDate.getDate() + daysGap);
 
-  return new Date(currentDate);
+  return currentDate;
 };
 
 const generateRepeating = () => {
   return {
-    mo: false,
+    mo: Boolean(getRandomInteger()),
     tu: Boolean(getRandomInteger()),
-    we: false,
+    we: Boolean(getRandomInteger()),
     th: Boolean(getRandomInteger()),
-    fr: false,
+    fr: Boolean(getRandomInteger()),
     sa: Boolean(getRandomInteger()),
-    su: false
+    su: Boolean(getRandomInteger())
   };
 };
 

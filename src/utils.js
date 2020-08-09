@@ -9,7 +9,7 @@ const getCurrentDate = () => {
   const currentDate = new Date();
   currentDate.setHours(23, 59, 59, 999);
 
-  return new Date(currentDate);
+  return currentDate;
 };
 
 export const isExpired = (dueDate) => {
@@ -17,9 +17,7 @@ export const isExpired = (dueDate) => {
     return false;
   }
 
-  const currentDate = getCurrentDate();
-
-  return currentDate.getTime() > dueDate.getTime();
+  return getCurrentDate().getTime() > dueDate.getTime();
 };
 
 export const isExpiringToday = (dueDate) => {
@@ -27,9 +25,7 @@ export const isExpiringToday = (dueDate) => {
     return false;
   }
 
-  const currentDate = getCurrentDate();
-
-  return currentDate.getTime() === dueDate.getTime();
+  return getCurrentDate().getTime() === dueDate.getTime();
 };
 
 export const isRepeating = (repeatingDays) => {

@@ -1,3 +1,4 @@
+import {TASK_COUNT, TASK_COUNT_PER_STEP} from "./const";
 import {createMenuTemplate} from "./view/menu";
 import {createFilterTemplate} from "./view/filter";
 import {createBoardTemplate} from "./view/board";
@@ -7,7 +8,6 @@ import {createTaskEditTemplate} from "./view/task-edit";
 import {createLoadMoreButtonTemplate} from "./view/load-more-button";
 import {generateTask} from "./mock/task";
 import {generateFilter} from "./mock/filter";
-import {TASK_COUNT, TASK_COUNT_PER_STEP} from "./const";
 
 const tasks = new Array(TASK_COUNT).fill().map(generateTask);
 const filters = generateFilter(tasks);
