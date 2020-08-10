@@ -3,22 +3,6 @@ import {isExpired, isRepeating, getFormattingDueDate} from "../utils";
 export const createTaskTemplate = (task) => {
   const {description, dueDate, color, repeatingDays, isArchive, isFavorite} = task;
 
-  const createDateTemplate = (date) => {
-    return (
-      date !== null
-        ? `<div class="card__dates">
-          <div class="card__date-deadline">
-            <p class="card__input-deadline-wrap">
-              <span class="card__date">${getFormattingDueDate(date)}</span>
-            </p>
-          </div>
-        </div>`
-        : ``
-    );
-  };
-
-  const date = createDateTemplate(dueDate);
-
   const deadlineClassName = isExpired(dueDate)
     ? `card--deadline`
     : ``;
@@ -66,7 +50,13 @@ export const createTaskTemplate = (task) => {
 
           <div class="card__settings">
             <div class="card__details">
-              ${date}
+              ${dueDate !== null ? `<div class="card__dates">
+                <div class="card__date-deadline">
+                  <p class="card__input-deadline-wrap">
+                    <span class="card__date">${getFormattingDueDate(dueDate)}</span>
+                  </p>
+                </div>
+              </div>` : ``}
             </div>
           </div>
         </div>

@@ -1,25 +1,27 @@
 import {COLORS} from "../const";
 import {getRandomInteger} from "../utils";
 
-const generateDescription = () => {
-  const DESCRIPTION = [
-    `Изучить теорию`,
-    `Сделать домашку`,
-    `Пройти интенсив на соточку`
-  ];
+const DESCRIPTION = [
+  `Изучить теорию`,
+  `Сделать домашку`,
+  `Пройти интенсив на соточку`
+];
 
+const checkDoesDate = () => {
+  if (getRandomInteger()) {
+    return false;
+  }
+
+  return true;
+};
+
+const generateRandomDescription = () => {
   const randomIndex = getRandomInteger(0, DESCRIPTION.length - 1);
 
   return DESCRIPTION[randomIndex];
 };
 
-const generateDate = () => {
-  const isDate = Boolean(getRandomInteger());
-
-  if (!isDate) {
-    return null;
-  }
-
+const generateRandomDate = () => {
   const maxDaysGap = 10;
   const daysGap = getRandomInteger(-maxDaysGap, maxDaysGap);
   const currentDate = new Date();
@@ -30,7 +32,7 @@ const generateDate = () => {
   return currentDate;
 };
 
-const generateRepeating = () => {
+const generateRandomRepeating = () => {
   return {
     mo: Boolean(getRandomInteger()),
     tu: Boolean(getRandomInteger()),
@@ -42,16 +44,19 @@ const generateRepeating = () => {
   };
 };
 
-const getRandomColor = () => {
+const generateRandomColor = () => {
   const randomIndex = getRandomInteger(0, COLORS.length - 1);
 
   return COLORS[randomIndex];
 };
 
 export const generateTask = () => {
-  const dueDate = generateDate();
+  const dueDate = checkDoesDate() === true
+    ? generateRandomDate()
+    : null;
+
   const repeatingDays = dueDate === null
-    ? generateRepeating()
+    ? generateRandomRepeating()
     : {
       mo: false,
       tu: false,
@@ -63,10 +68,10 @@ export const generateTask = () => {
     };
 
   return {
-    description: generateDescription(),
+    description: generateRandomDescription(),
     dueDate,
     repeatingDays,
-    color: getRandomColor(),
+    color: generateRandomColor(),
     isFavorite: Boolean(getRandomInteger()),
     isArchive: Boolean(getRandomInteger())
   };

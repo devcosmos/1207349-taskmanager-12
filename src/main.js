@@ -39,8 +39,7 @@ if (tasks.length > TASK_COUNT_PER_STEP) {
   const loadMoreButton = boardElement.querySelector(`.load-more`);
   let renderedTaskCount = TASK_COUNT_PER_STEP;
 
-  loadMoreButton.addEventListener(`click`, (evt) => {
-    evt.preventDefault();
+  loadMoreButton.addEventListener(`click`, () => {
     tasks
     .slice(renderedTaskCount, renderedTaskCount + TASK_COUNT_PER_STEP)
     .forEach((task) => render(tasksElement, createTaskTemplate(task), `beforeend`));
