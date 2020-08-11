@@ -7,14 +7,6 @@ const DESCRIPTION = [
   `Пройти интенсив на соточку`
 ];
 
-const checkDoesDate = () => {
-  if (getRandomInteger()) {
-    return false;
-  }
-
-  return true;
-};
-
 const generateRandomDescription = () => {
   const randomIndex = getRandomInteger(0, DESCRIPTION.length - 1);
 
@@ -51,7 +43,7 @@ const generateRandomColor = () => {
 };
 
 export const generateTask = () => {
-  const dueDate = checkDoesDate() === true
+  const dueDate = getRandomInteger()
     ? generateRandomDate()
     : null;
 

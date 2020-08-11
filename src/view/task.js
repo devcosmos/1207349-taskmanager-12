@@ -48,17 +48,17 @@ export const createTaskTemplate = (task) => {
             <p class="card__text">${description}</p>
           </div>
 
-          <div class="card__settings">
+          ${dueDate !== null ? `<div class="card__settings">
             <div class="card__details">
-              ${dueDate !== null ? `<div class="card__dates">
+              <div class="card__dates">
                 <div class="card__date-deadline">
                   <p class="card__input-deadline-wrap">
                     <span class="card__date">${getFormattingDueDate(dueDate)}</span>
                   </p>
                 </div>
-              </div>` : ``}
+              </div>
             </div>
-          </div>
+          </div>` : ``}
         </div>
       </div>
     </article>`
