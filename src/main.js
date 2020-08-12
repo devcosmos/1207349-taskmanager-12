@@ -5,10 +5,10 @@ import BoardView from "./view/board";
 import SortingsView from "./view/sortings";
 import TaskView from "./view/task";
 import TaskEditView from "./view/task-edit";
-import {createLoadMoreButtonTemplate} from "./view/load-more-button";
+import LoadMoreButtonView from "./view/load-more-button";
 import {generateTask} from "./mock/task";
 import {generateFilter} from "./mock/filter";
-import {renderTemplate, renderElement} from "./utils";
+import {renderElement} from "./utils";
 
 const tasks = new Array(TASK_COUNT).fill().map(generateTask);
 const filters = generateFilter(tasks);
@@ -30,7 +30,7 @@ for (let i = 1; i < Math.min(tasks.length, TASK_COUNT_PER_STEP); i++) {
 }
 
 if (tasks.length > TASK_COUNT_PER_STEP) {
-  renderTemplate(boardElement, createLoadMoreButtonTemplate(), `beforeend`);
+  renderElement(boardElement, new LoadMoreButtonView().getElement(), RENDER_POSITION.BEFOREEND);
 
   const loadMoreButton = boardElement.querySelector(`.load-more`);
   let renderedTaskCount = TASK_COUNT_PER_STEP;
