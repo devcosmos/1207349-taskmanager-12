@@ -26,6 +26,24 @@ renderElement(boardComponent.getElement(), new SortingsView().getElement(), REND
 
 const renderTask = (tasksElement, task) => {
   const taskComponent = new TaskView(task);
+  const taskEditComponent = new TaskEditView(task);
+
+  const replaceCardToForm = () => {
+    tasksElement.replaceChild(taskEditComponent.getElement(), taskComponent.getElement());
+  };
+
+  const replaceFormToCard = () => {
+    tasksElement.replaceChild(taskComponent.getElement(), taskEditComponent.getElement());
+  };
+
+  taskComponent.getElement().querySelector(`.card__btn--edit`).addEventListener(`click`, () => {
+    replaceCardToForm();
+  });
+
+  taskEditComponent.getElement().querySelector(`form`).addEventListener(`submit`, (evt) => {
+    evt.preventDefault();
+    replaceFormToCard();
+  });
 
   renderElement(tasksElement, taskComponent.getElement(), RENDER_POSITION.BEFOREEND);
 };
