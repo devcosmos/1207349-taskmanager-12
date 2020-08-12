@@ -1,6 +1,6 @@
 import {TASK_COUNT, TASK_COUNT_PER_STEP, RENDER_POSITION} from "./const";
 import MenuView from "./view/menu";
-import {createFilterTemplate} from "./view/filter";
+import FilterView from "./view/filter";
 import {createBoardTemplate} from "./view/board";
 import {createSortingsTemplate} from "./view/sortings";
 import {createTaskTemplate} from "./view/task";
@@ -16,7 +16,7 @@ const siteMainElement = document.querySelector(`.main`);
 const siteHeaderElement = siteMainElement.querySelector(`.main__control`);
 
 renderElement(siteHeaderElement, new MenuView().getElement(), RENDER_POSITION.BEFOREEND);
-renderTemplate(siteMainElement, createFilterTemplate(filters), `beforeend`);
+renderElement(siteMainElement, new FilterView(filters).getElement(), RENDER_POSITION.BEFOREEND);
 renderTemplate(siteMainElement, createBoardTemplate(), `beforeend`);
 
 const boardElement = siteMainElement.querySelector(`.board`);
