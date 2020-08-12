@@ -2,6 +2,7 @@ import {TASK_COUNT, TASK_COUNT_PER_STEP, RENDER_POSITION} from "./const";
 import MenuView from "./view/menu";
 import FilterView from "./view/filter";
 import BoardView from "./view/board";
+import TasksView from "./view/tasks";
 import SortingsView from "./view/sortings";
 import TaskView from "./view/task";
 import TaskEditView from "./view/task-edit";
@@ -20,9 +21,12 @@ renderElement(siteMainElement, new FilterView(filters).getElement(), RENDER_POSI
 renderElement(siteMainElement, new BoardView().getElement(), RENDER_POSITION.BEFOREEND);
 
 const boardElement = siteMainElement.querySelector(`.board`);
+
+renderElement(boardElement, new TasksView().getElement(), RENDER_POSITION.BEFOREEND);
+renderElement(boardElement, new SortingsView().getElement(), RENDER_POSITION.AFTERBEGIN);
+
 const tasksElement = boardElement.querySelector(`.board__tasks`);
 
-renderElement(boardElement, new SortingsView().getElement(), RENDER_POSITION.AFTERBEGIN);
 renderElement(tasksElement, new TaskEditView(tasks[0]).getElement(), RENDER_POSITION.BEFOREEND);
 
 for (let i = 1; i < Math.min(tasks.length, TASK_COUNT_PER_STEP); i++) {
