@@ -35,3 +35,7 @@ export const isRepeating = (repeatingDays) => {
 export const getFormattingDueDate = (date) => {
   return date.toLocaleString(`ru-RU`, {day: `numeric`, month: `long`});
 };
+
+export const render = (container, template, place) => {
+  container.insertAdjacentHTML(place, template);
+};
