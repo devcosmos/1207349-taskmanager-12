@@ -2,7 +2,7 @@ import {TASK_COUNT, TASK_COUNT_PER_STEP, RENDER_POSITION} from "./const";
 import MenuView from "./view/menu";
 import FilterView from "./view/filter";
 import BoardView from "./view/board";
-import {createSortingsTemplate} from "./view/sortings";
+import SortingsView from "./view/sortings";
 import {createTaskTemplate} from "./view/task";
 import {createTaskEditTemplate} from "./view/task-edit";
 import {createLoadMoreButtonTemplate} from "./view/load-more-button";
@@ -22,7 +22,7 @@ renderElement(siteMainElement, new BoardView().getElement(), RENDER_POSITION.BEF
 const boardElement = siteMainElement.querySelector(`.board`);
 const tasksElement = boardElement.querySelector(`.board__tasks`);
 
-renderTemplate(boardElement, createSortingsTemplate(), `afterbegin`);
+renderElement(boardElement, new SortingsView().getElement(), RENDER_POSITION.AFTERBEGIN);
 renderTemplate(tasksElement, createTaskEditTemplate(tasks[0]), `beforeend`);
 
 for (let i = 1; i < Math.min(tasks.length, TASK_COUNT_PER_STEP); i++) {
