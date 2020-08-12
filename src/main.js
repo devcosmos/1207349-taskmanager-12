@@ -23,10 +23,16 @@ renderElement(siteMainElement, new FilterView(filters).getElement(), RENDER_POSI
 renderElement(siteMainElement, boardComponent.getElement(), RENDER_POSITION.BEFOREEND);
 renderElement(boardComponent.getElement(), tasksComponent.getElement(), RENDER_POSITION.BEFOREEND);
 renderElement(boardComponent.getElement(), new SortingsView().getElement(), RENDER_POSITION.AFTERBEGIN);
-renderElement(tasksComponent.getElement(), new TaskEditView(tasks[0]).getElement(), RENDER_POSITION.BEFOREEND);
 
-for (let i = 1; i < Math.min(tasks.length, TASK_COUNT_PER_STEP); i++) {
-  renderElement(tasksComponent.getElement(), new TaskView(tasks[i]).getElement(), RENDER_POSITION.BEFOREEND);
+const renderTask = (tasksElement, task) => {
+  const taskComponent = new TaskView(task);
+
+  renderElement(tasksElement, taskComponent.getElement(), RENDER_POSITION.BEFOREEND);
+};
+
+
+for (let i = 0; i < Math.min(tasks.length, TASK_COUNT_PER_STEP); i++) {
+  renderTask(tasksComponent.getElement(), tasks[i]);
 }
 
 if (tasks.length > TASK_COUNT_PER_STEP) {
@@ -38,7 +44,7 @@ if (tasks.length > TASK_COUNT_PER_STEP) {
   loadMoreButtonComponent.getElement().addEventListener(`click`, () => {
     tasks
     .slice(renderedTaskCount, renderedTaskCount + TASK_COUNT_PER_STEP)
-    .forEach((task) => renderElement(tasksComponent.getElement(), new TaskView(task).getElement(), RENDER_POSITION.BEFOREEND));
+    .forEach((task) => renderTask(tasksComponent.getElement(), task));
 
     renderedTaskCount += TASK_COUNT_PER_STEP;
 
