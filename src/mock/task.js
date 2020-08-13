@@ -43,7 +43,7 @@ const generateRandomColor = () => {
 };
 
 export const generateTask = () => {
-  const dueDate = getRandomInteger()
+  const dueDate = !!getRandomInteger()
     ? generateRandomDate()
     : null;
 
