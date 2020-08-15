@@ -1,53 +1,74 @@
-import {TASK_COUNT, TASK_COUNT_PER_STEP} from "./const";
-import {createMenuTemplate} from "./view/menu";
-import {createFilterTemplate} from "./view/filter";
-import {createBoardTemplate} from "./view/board";
-import {createSortingsTemplate} from "./view/sortings";
-import {createTaskTemplate} from "./view/task";
-import {createTaskEditTemplate} from "./view/task-edit";
-import {createLoadMoreButtonTemplate} from "./view/load-more-button";
+import {TASK_COUNT, TASK_COUNT_PER_STEP, RENDER_POSITION} from "./const";
+import MenuView from "./view/menu";
+import FilterView from "./view/filter";
+import BoardView from "./view/board";
+import TasksView from "./view/tasks";
+import SortingsView from "./view/sortings";
+import TaskView from "./view/task";
+import TaskEditView from "./view/task-edit";
+import LoadMoreButtonView from "./view/load-more-button";
 import {generateTask} from "./mock/task";
 import {generateFilter} from "./mock/filter";
+import {renderElement} from "./utils";
 
 const tasks = new Array(TASK_COUNT).fill().map(generateTask);
 const filters = generateFilter(tasks);
-
-const render = (container, template, place) => {
-  container.insertAdjacentHTML(place, template);
-};
-
 const siteMainElement = document.querySelector(`.main`);
 const siteHeaderElement = siteMainElement.querySelector(`.main__control`);
+const boardComponent = new BoardView();
+const tasksComponent = new TasksView();
 
-render(siteHeaderElement, createMenuTemplate(), `beforeend`);
-render(siteMainElement, createFilterTemplate(filters), `beforeend`);
-render(siteMainElement, createBoardTemplate(), `beforeend`);
+renderElement(siteHeaderElement, new MenuView().getElement(), RENDER_POSITION.BEFOREEND);
+renderElement(siteMainElement, new FilterView(filters).getElement(), RENDER_POSITION.BEFOREEND);
+renderElement(siteMainElement, boardComponent.getElement(), RENDER_POSITION.BEFOREEND);
+renderElement(boardComponent.getElement(), tasksComponent.getElement(), RENDER_POSITION.BEFOREEND);
+renderElement(boardComponent.getElement(), new SortingsView().getElement(), RENDER_POSITION.AFTERBEGIN);
 
-const boardElement = siteMainElement.querySelector(`.board`);
-const tasksElement = boardElement.querySelector(`.board__tasks`);
+const renderTask = (tasksElement, task) => {
+  const taskComponent = new TaskView(task);
+  const taskEditComponent = new TaskEditView(task);
 
-render(boardElement, createSortingsTemplate(), `afterbegin`);
-render(tasksElement, createTaskEditTemplate(tasks[0]), `beforeend`);
+  const replaceCardToForm = () => {
+    tasksElement.replaceChild(taskEditComponent.getElement(), taskComponent.getElement());
+  };
 
-for (let i = 1; i < Math.min(tasks.length, TASK_COUNT_PER_STEP); i++) {
-  render(tasksElement, createTaskTemplate(tasks[i]), `beforeend`);
+  const replaceFormToCard = () => {
+    tasksElement.replaceChild(taskComponent.getElement(), taskEditComponent.getElement());
+  };
+
+  taskComponent.getElement().querySelector(`.card__btn--edit`).addEventListener(`click`, () => {
+    replaceCardToForm();
+  });
+
+  taskEditComponent.getElement().querySelector(`form`).addEventListener(`submit`, (evt) => {
+    evt.preventDefault();
+    replaceFormToCard();
+  });
+
+  renderElement(tasksElement, taskComponent.getElement(), RENDER_POSITION.BEFOREEND);
+};
+
+
+for (let i = 0; i < Math.min(tasks.length, TASK_COUNT_PER_STEP); i++) {
+  renderTask(tasksComponent.getElement(), tasks[i]);
 }
 
 if (tasks.length > TASK_COUNT_PER_STEP) {
-  render(boardElement, createLoadMoreButtonTemplate(), `beforeend`);
-
-  const loadMoreButton = boardElement.querySelector(`.load-more`);
+  const loadMoreButtonComponent = new LoadMoreButtonView();
   let renderedTaskCount = TASK_COUNT_PER_STEP;
 
-  loadMoreButton.addEventListener(`click`, () => {
+  renderElement(boardComponent.getElement(), loadMoreButtonComponent.getElement(), RENDER_POSITION.BEFOREEND);
+
+  loadMoreButtonComponent.getElement().addEventListener(`click`, () => {
     tasks
     .slice(renderedTaskCount, renderedTaskCount + TASK_COUNT_PER_STEP)
-    .forEach((task) => render(tasksElement, createTaskTemplate(task), `beforeend`));
+    .forEach((task) => renderTask(tasksComponent.getElement(), task));
 
     renderedTaskCount += TASK_COUNT_PER_STEP;
 
     if (renderedTaskCount >= tasks.length) {
-      loadMoreButton.remove();
+      loadMoreButtonComponent.getElement().remove();
+      loadMoreButtonComponent.removeElement();
     }
   });
 }
