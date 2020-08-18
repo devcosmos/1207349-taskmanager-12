@@ -7,6 +7,7 @@ import SortingsView from "./view/sortings";
 import TaskView from "./view/task";
 import TaskEditView from "./view/task-edit";
 import LoadMoreButtonView from "./view/load-more-button";
+import NoTaskView from "./view/no-task.js";
 import {generateTask} from "./mock/task";
 import {generateFilter} from "./mock/filter";
 import {renderElement} from "./utils";
@@ -22,7 +23,12 @@ renderElement(siteHeaderElement, new MenuView().getElement(), RENDER_POSITION.BE
 renderElement(siteMainElement, new FilterView(filters).getElement(), RENDER_POSITION.BEFOREEND);
 renderElement(siteMainElement, boardComponent.getElement(), RENDER_POSITION.BEFOREEND);
 renderElement(boardComponent.getElement(), tasksComponent.getElement(), RENDER_POSITION.BEFOREEND);
-renderElement(boardComponent.getElement(), new SortingsView().getElement(), RENDER_POSITION.AFTERBEGIN);
+
+if (tasks.every((task) => task.isArchive)) {
+  renderElement(boardComponent.getElement(), new NoTaskView().getElement(), RENDER_POSITION.AFTERBEGIN);
+} else {
+  renderElement(boardComponent.getElement(), new SortingsView().getElement(), RENDER_POSITION.AFTERBEGIN);
+}
 
 const renderTask = (tasksElement, task) => {
   const taskComponent = new TaskView(task);
