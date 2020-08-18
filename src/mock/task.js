@@ -43,7 +43,7 @@ const generateRandomColor = () => {
 };
 
 export const generateTask = () => {
-  const dueDate = !!getRandomInteger()
+  const dueDate = getRandomInteger()
     ? generateRandomDate()
     : null;
 
@@ -65,6 +65,6 @@ export const generateTask = () => {
     repeatingDays,
     color: generateRandomColor(),
     isFavorite: Boolean(getRandomInteger()),
-    isArchive: Boolean(getRandomInteger())
+    isArchive: true
   };
 };
