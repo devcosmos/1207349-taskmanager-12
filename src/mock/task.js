@@ -65,6 +65,6 @@ export const generateTask = () => {
     repeatingDays,
     color: generateRandomColor(),
     isFavorite: Boolean(getRandomInteger()),
-    isArchive: true
+    isArchive: Boolean(getRandomInteger())
   };
 };
