@@ -10,7 +10,7 @@ import LoadMoreButtonView from "./view/load-more-button";
 import NoTaskView from "./view/no-task.js";
 import {generateTask} from "./mock/task";
 import {generateFilter} from "./mock/filter";
-import {renderElement} from "./utils";
+import {renderElement} from "./utils/render";
 
 const tasks = new Array(TASK_COUNT).fill().map(generateTask);
 const filters = generateFilter(tasks);

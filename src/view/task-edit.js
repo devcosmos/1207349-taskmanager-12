@@ -1,6 +1,6 @@
 import {COLORS} from "../const";
 import AbstractView from "./abstract";
-import {isExpired, isRepeating, getFormattingDueDate} from "../utils";
+import {isExpired, isRepeating, getFormattingDueDate} from "../utils/task";
 
 const BLANK_TASK = {
   description: ``,
