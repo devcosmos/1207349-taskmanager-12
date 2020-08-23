@@ -1,10 +1,12 @@
 import {RENDER_POSITION, TASK_COUNT_PER_STEP} from "../const";
-import BoardView from "./view/board";
-import TasksView from "./view/tasks";
-import SortingsView from "./view/sortings";
-import LoadMoreButtonView from "./view/load-more-button";
-import NoTaskView from "./view/no-task.js";
-import {renderElement, remove} from "./utils/render";
+import BoardView from "../view/board";
+import TasksView from "../view/tasks";
+import SortingsView from "../view/sortings";
+import TaskView from "../view/task";
+import TaskEditView from "../view/task-edit";
+import LoadMoreButtonView from "../view/load-more-button";
+import NoTaskView from "../view/no-task.js";
+import {renderElement, remove, replace} from "../utils/render";
 
 export default class Board {
   constructor(boardContainer) {
@@ -26,14 +28,42 @@ export default class Board {
     this._renderBoard();
   }
 
-  _renderTask() {
-  
+  _renderTask(task) {
+    const taskComponent = new TaskView(task);
+    const taskEditComponent = new TaskEditView(task);
+
+    const replaceCardToForm = () => {
+      replace(taskEditComponent, taskComponent);
+    };
+
+    const replaceFormToCard = () => {
+      replace(taskComponent, taskEditComponent);
+    };
+
+    const onEscKeyDown = (evt) => {
+      if (evt.key === `Escape`) {
+        replaceFormToCard();
+        document.removeEventListener(`keydown`, onEscKeyDown);
+      }
+    };
+
+    taskComponent.setEditClickHandler(() => {
+      replaceCardToForm();
+      document.addEventListener(`keydown`, onEscKeyDown);
+    });
+
+    taskEditComponent.setFormSubmitHandler(() => {
+      replaceFormToCard();
+      document.removeEventListener(`keydown`, onEscKeyDown);
+    });
+
+    renderElement(this._tasksComponent, taskComponent, RENDER_POSITION.BEFOREEND);
   }
 
   _renderTasks(from, to) {
     this._boardTasks
       .slice(from, to)
-      .forEach((boardTask) => renderTask(this._tasksComponent.getElement(), boardTask));
+      .forEach((boardTask) => this._renderTask(boardTask));
   }
 
   _renderNoTask() {
@@ -52,7 +82,7 @@ export default class Board {
     this._loadMoreButtonComponent.setClickHandler(() => {
       this._boardTasks
         .slice(renderedTaskCount, renderedTaskCount + TASK_COUNT_PER_STEP)
-        .forEach((boardTask) => renderTask(this._tasksComponent.getElement(), boardTask));
+        .forEach((boardTask) => this._renderTask(boardTask));
 
       renderedTaskCount += TASK_COUNT_PER_STEP;
 
@@ -70,7 +100,7 @@ export default class Board {
 
     this._renderSortings();
 
-    this._renderTasks(0, Math.min(this._boardTasks, TASK_COUNT_PER_STEP));
+    this._renderTasks(0, Math.min(this._boardTasks.length, TASK_COUNT_PER_STEP));
 
     if (this._boardTasks.length > TASK_COUNT_PER_STEP) {
       this._renderLoadMoreButton();
