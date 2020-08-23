@@ -47,22 +47,22 @@ const renderTask = (tasksElement, task) => {
     document.removeEventListener(`keydown`, onEscKeyDown);
   });
 
-  renderElement(tasksElement, taskComponent.getElement(), RENDER_POSITION.BEFOREEND);
+  renderElement(tasksElement, taskComponent, RENDER_POSITION.BEFOREEND);
 };
 
 const renderBoard = (boardContainer, boardTasks) => {
   const boardComponent = new BoardView();
   const tasksComponent = new TasksView();
 
-  renderElement(boardContainer, boardComponent.getElement(), RENDER_POSITION.BEFOREEND);
-  renderElement(boardComponent.getElement(), tasksComponent.getElement(), RENDER_POSITION.BEFOREEND);
+  renderElement(boardContainer, boardComponent, RENDER_POSITION.BEFOREEND);
+  renderElement(boardComponent, tasksComponent, RENDER_POSITION.BEFOREEND);
 
   if (boardTasks.every((task) => task.isArchive)) {
-    renderElement(boardComponent.getElement(), new NoTaskView().getElement(), RENDER_POSITION.AFTERBEGIN);
+    renderElement(boardComponent, new NoTaskView(), RENDER_POSITION.AFTERBEGIN);
     return;
   }
 
-  renderElement(boardComponent.getElement(), new SortingsView().getElement(), RENDER_POSITION.AFTERBEGIN);
+  renderElement(boardComponent, new SortingsView(), RENDER_POSITION.AFTERBEGIN);
 
   boardTasks
   .slice(0, Math.min(tasks.length, TASK_COUNT_PER_STEP))
@@ -72,7 +72,7 @@ const renderBoard = (boardContainer, boardTasks) => {
     const loadMoreButtonComponent = new LoadMoreButtonView();
     let renderedTaskCount = TASK_COUNT_PER_STEP;
 
-    renderElement(boardComponent.getElement(), loadMoreButtonComponent.getElement(), RENDER_POSITION.BEFOREEND);
+    renderElement(boardComponent, loadMoreButtonComponent, RENDER_POSITION.BEFOREEND);
 
     loadMoreButtonComponent.setClickHandler(() => {
       boardTasks
@@ -89,6 +89,6 @@ const renderBoard = (boardContainer, boardTasks) => {
   }
 };
 
-renderElement(siteHeaderElement, new MenuView().getElement(), RENDER_POSITION.BEFOREEND);
-renderElement(siteMainElement, new FilterView(filters).getElement(), RENDER_POSITION.BEFOREEND);
+renderElement(siteHeaderElement, new MenuView(), RENDER_POSITION.BEFOREEND);
+renderElement(siteMainElement, new FilterView(filters), RENDER_POSITION.BEFOREEND);
 renderBoard(siteMainElement, tasks);
