@@ -10,7 +10,7 @@ import LoadMoreButtonView from "./view/load-more-button";
 import NoTaskView from "./view/no-task.js";
 import {generateTask} from "./mock/task";
 import {generateFilter} from "./mock/filter";
-import {renderElement} from "./utils/render";
+import {renderElement, replace} from "./utils/render";
 
 const tasks = new Array(TASK_COUNT).fill().map(generateTask);
 const filters = generateFilter(tasks);
@@ -23,11 +23,11 @@ const renderTask = (tasksElement, task) => {
   const taskEditComponent = new TaskEditView(task);
 
   const replaceCardToForm = () => {
-    tasksElement.replaceChild(taskEditComponent.getElement(), taskComponent.getElement());
+    replace(taskEditComponent, taskComponent);
   };
 
   const replaceFormToCard = () => {
-    tasksElement.replaceChild(taskComponent.getElement(), taskEditComponent.getElement());
+    replace(taskComponent, taskEditComponent);
   };
 
   const onEscKeyDown = (evt) => {
