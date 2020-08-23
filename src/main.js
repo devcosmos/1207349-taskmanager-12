@@ -10,7 +10,7 @@ import LoadMoreButtonView from "./view/load-more-button";
 import NoTaskView from "./view/no-task.js";
 import {generateTask} from "./mock/task";
 import {generateFilter} from "./mock/filter";
-import {renderElement, replace} from "./utils/render";
+import {renderElement, replace, remove} from "./utils/render";
 
 const tasks = new Array(TASK_COUNT).fill().map(generateTask);
 const filters = generateFilter(tasks);
@@ -82,8 +82,7 @@ const renderBoard = (boardContainer, boardTasks) => {
       renderedTaskCount += TASK_COUNT_PER_STEP;
 
       if (renderedTaskCount >= boardTasks.length) {
-        loadMoreButtonComponent.getElement().remove();
-        loadMoreButtonComponent.removeElement();
+        remove(loadMoreButtonComponent);
       }
     });
   }
