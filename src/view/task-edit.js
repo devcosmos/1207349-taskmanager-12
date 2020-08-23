@@ -1,5 +1,6 @@
 import {COLORS} from "../const";
-import {isExpired, isRepeating, getFormattingDueDate, createElement} from "../utils";
+import AbstractView from "./abstract";
+import {isExpired, isRepeating, getFormattingDueDate} from "../utils";
 
 const BLANK_TASK = {
   description: ``,
@@ -89,7 +90,7 @@ const createTaskEditColorsTemplate = (currentColor) => {
   );
 };
 
-export const createTaskEditTemplate = (task) => {
+const createTaskEditTemplate = (task) => {
   const {description, dueDate, repeatingDays, color} = task;
 
   const deadlineClassName = isExpired(dueDate)
@@ -153,25 +154,13 @@ export const createTaskEditTemplate = (task) => {
   );
 };
 
-export default class TaskEdit {
+export default class TaskEdit extends AbstractView {
   constructor(task = BLANK_TASK) {
+    super();
     this._task = task;
-    this._element = null;
   }
 
   getTemplate() {
     return createTaskEditTemplate(this._task);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
