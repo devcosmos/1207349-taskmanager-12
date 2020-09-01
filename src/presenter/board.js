@@ -20,6 +20,7 @@ export default class Board {
     this._loadMoreButtonComponent = new LoadMoreButtonView();
 
     this._handleLoadMoreButtonClick = this._handleLoadMoreButtonClick.bind(this);
+    this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
   }
 
   init(boardTasks) {
@@ -73,8 +74,13 @@ export default class Board {
     renderElement(this._boardComponent, this._noTaskComponent, RENDER_POSITION.AFTERBEGIN);
   }
 
+  _handleSortTypeChange(sortType) {
+    
+  }
+
   _renderSortings() {
     renderElement(this._boardComponent, this._sortingsComponent, RENDER_POSITION.AFTERBEGIN);
+    this._sortComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
   }
 
   _handleLoadMoreButtonClick() {
