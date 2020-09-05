@@ -7,6 +7,7 @@ import NoTaskView from "../view/no-task";
 import TaskPresenter from "../presenter/task";
 import {renderElement, remove} from "../utils/render";
 import {sortTaskUp, sortTaskDown} from "../utils/task";
+import {updateItem} from "../utils/common";
 
 export default class Board {
   constructor(boardContainer) {
@@ -21,6 +22,7 @@ export default class Board {
     this._sortingsComponent = new SortingsView();
     this._loadMoreButtonComponent = new LoadMoreButtonView();
 
+    this._handleTaskChange = this._handleTaskChange.bind(this);
     this._handleLoadMoreButtonClick = this._handleLoadMoreButtonClick.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
   }
@@ -36,7 +38,7 @@ export default class Board {
   }
 
   _renderTask(task) {
-    const taskPresenter = new TaskPresenter(this._tasksComponent);
+    const taskPresenter = new TaskPresenter(this._tasksComponent, this._handleTaskChange);
     taskPresenter.init(task);
     this._taskPresenter[task.id] = taskPresenter;
   }
@@ -49,6 +51,12 @@ export default class Board {
 
   _renderNoTask() {
     renderElement(this._boardComponent, this._noTaskComponent, RenderPosition.AFTERBEGIN);
+  }
+
+  _handleTaskChange(updatedTask) {
+    this._boardTasks = updateItem(this._boardTasks, updatedTask);
+    this._sourcedBoardTasks = updateItem(this._sourcedBoardTasks, updatedTask);
+    this._taskPresenter[updatedTask.id].init(updatedTask);
   }
 
   _sortTasks(sortType) {
@@ -103,7 +111,7 @@ export default class Board {
       .forEach((presenter) => presenter.destroy());
     this._taskPresenter = {};
 
-    this._renderedTaskCount = TASK_COUNT_PER_STEP;  
+    this._renderedTaskCount = TASK_COUNT_PER_STEP;
   }
 
   _renderTaskList() {
