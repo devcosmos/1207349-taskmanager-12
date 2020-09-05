@@ -1,4 +1,4 @@
-import {TASK_COUNT, RENDER_POSITION} from "./const";
+import {TASK_COUNT, RenderPosition} from "./const";
 import MenuView from "./view/menu";
 import FilterView from "./view/filter";
 import {generateTask} from "./mock/task";
@@ -14,7 +14,7 @@ const siteHeaderElement = siteMainElement.querySelector(`.main__control`);
 
 const boardPresenter = new BoardPresenter(siteMainElement);
 
-renderElement(siteHeaderElement, new MenuView(), RENDER_POSITION.BEFOREEND);
-renderElement(siteMainElement, new FilterView(filters), RENDER_POSITION.BEFOREEND);
+renderElement(siteHeaderElement, new MenuView(), RenderPosition.BEFOREEND);
+renderElement(siteMainElement, new FilterView(filters), RenderPosition.BEFOREEND);
 
 boardPresenter.init(tasks);

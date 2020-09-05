@@ -1,4 +1,4 @@
-import {RENDER_POSITION, TASK_COUNT_PER_STEP, SORT_TYPE} from "../const";
+import {RenderPosition, TASK_COUNT_PER_STEP, SortType} from "../const";
 import BoardView from "../view/board";
 import TasksView from "../view/tasks";
 import SortingsView from "../view/sortings";
@@ -13,7 +13,7 @@ export default class Board {
   constructor(boardContainer) {
     this._boardContainer = boardContainer;
     this._renderedTaskCount = TASK_COUNT_PER_STEP;
-    this._currentSortType = SORT_TYPE.DEFAULT;
+    this._currentSortType = SortType.DEFAULT;
 
     this._boardComponent = new BoardView();
     this._tasksComponent = new TasksView();
@@ -29,8 +29,8 @@ export default class Board {
     this._boardTasks = boardTasks.slice();
     this._sourcedBoardTasks = boardTasks.slice();
 
-    renderElement(this._boardContainer, this._boardComponent, RENDER_POSITION.BEFOREEND);
-    renderElement(this._boardComponent, this._tasksComponent, RENDER_POSITION.BEFOREEND);
+    renderElement(this._boardContainer, this._boardComponent, RenderPosition.BEFOREEND);
+    renderElement(this._boardComponent, this._tasksComponent, RenderPosition.BEFOREEND);
 
     this._renderBoard();
   }
@@ -64,7 +64,7 @@ export default class Board {
       document.removeEventListener(`keydown`, onEscKeyDown);
     });
 
-    renderElement(this._tasksComponent, taskComponent, RENDER_POSITION.BEFOREEND);
+    renderElement(this._tasksComponent, taskComponent, RenderPosition.BEFOREEND);
   }
 
   _renderTasks(from, to) {
@@ -74,15 +74,15 @@ export default class Board {
   }
 
   _renderNoTask() {
-    renderElement(this._boardComponent, this._noTaskComponent, RENDER_POSITION.AFTERBEGIN);
+    renderElement(this._boardComponent, this._noTaskComponent, RenderPosition.AFTERBEGIN);
   }
 
   _sortTasks(sortType) {
     switch (sortType) {
-      case SORT_TYPE.DATE_UP:
+      case SortType.DATE_UP:
         this._boardTasks.sort(sortTaskUp);
         break;
-      case SORT_TYPE.DATE_DOWN:
+      case SortType.DATE_DOWN:
         this._boardTasks.sort(sortTaskDown);
         break;
       default:
@@ -104,7 +104,7 @@ export default class Board {
   }
 
   _renderSortings() {
-    renderElement(this._boardComponent, this._sortingsComponent, RENDER_POSITION.AFTERBEGIN);
+    renderElement(this._boardComponent, this._sortingsComponent, RenderPosition.AFTERBEGIN);
     this._sortingsComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
   }
 
@@ -118,7 +118,7 @@ export default class Board {
   }
 
   _renderLoadMoreButton() {
-    renderElement(this._boardComponent, this._loadMoreButtonComponent, RENDER_POSITION.BEFOREEND);
+    renderElement(this._boardComponent, this._loadMoreButtonComponent, RenderPosition.BEFOREEND);
 
     this._loadMoreButtonComponent.setClickHandler(this._handleLoadMoreButtonClick);
   }
