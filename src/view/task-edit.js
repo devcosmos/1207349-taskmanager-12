@@ -172,6 +172,11 @@ export default class TaskEdit extends SmartView {
     );
   }
 
+  restoreHandlers() {
+    this._setInnerHandlers();
+    this.setFormSubmitHandler(this._callback.formSubmit);
+  }
+
   getTemplate() {
     return createTaskEditTemplate(this._data);
   }

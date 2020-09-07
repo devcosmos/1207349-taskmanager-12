@@ -1,15 +1,17 @@
 import TaskView from "../view/task";
 import TaskEditView from "../view/task-edit";
 import {renderElement, replace, remove} from "../utils/render";
-import {RenderPosition} from "../const";
+import {RenderPosition, Mode} from "../const";
 
 export default class Task {
-  constructor(tasksContainer, changeData) {
+  constructor(tasksContainer, changeData, changeMode) {
     this._tasksContainer = tasksContainer;
     this._changeData = changeData;
+    this._changeMode = changeMode;
 
     this._taskComponent = null;
     this._taskEditComponent = null;
+    this._mode = Mode.DEFAULT;
 
     this._handleEditClick = this._handleEditClick.bind(this);
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
@@ -37,11 +39,11 @@ export default class Task {
       return;
     }
 
-    if (this._tasksContainer.getElement().contains(prevTaskComponent.getElement())) {
+    if (this._mode === Mode.DEFAULT) {
       replace(this._taskComponent, prevTaskComponent);
     }
 
-    if (this._tasksContainer.getElement().contains(prevTaskEditComponent.getElement())) {
+    if (this._mode === Mode.EDITING) {
       replace(this._taskEditComponent, prevTaskEditComponent);
     }
 
@@ -56,16 +58,27 @@ export default class Task {
 
   _replaceCardToForm() {
     replace(this._taskEditComponent, this._taskComponent);
+    document.addEventListener(`keydown`, this._escKeyDownHandler);
+    this._changeMode();
+    this._mode = Mode.EDITING;
   }
 
   _replaceFormToCard() {
     replace(this._taskComponent, this._taskEditComponent);
+    document.removeEventListener(`keydown`, this._escKeyDownHandler);
+    this._mode = Mode.DEFAULT;
+  }
+
+  resetView() {
+    if (this._mode !== Mode.DEFAULT) {
+      this._replaceFormToCard();
+    }
   }
 
   _escKeyDownHandler(evt) {
     if (evt.key === `Escape`) {
-      this._replaceFormToCard();
       this._taskEditComponent.reset(this._task);
+      this._replaceFormToCard();
     }
   }
 

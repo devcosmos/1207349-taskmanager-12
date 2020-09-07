@@ -11,3 +11,8 @@ export const SortType = {
   DATE_DOWN: `date-down`,
   DATE_UP: `date-up`
 };
+
+export const Mode = {
+  DEFAULT: `DEFAULT`,
+  EDITING: `EDITING`
+};
