@@ -1,5 +1,5 @@
 import AbstractView from "./abstract";
-import {isExpired, isRepeating, getFormattingDueDate} from "../utils/task";
+import {isExpired, isTaskRepeating, getFormattingDueDate} from "../utils/task";
 
 const createTaskTemplate = (task) => {
   const {description, dueDate, color, repeatingDays, isArchive, isFavorite} = task;
@@ -8,7 +8,7 @@ const createTaskTemplate = (task) => {
     ? `card--deadline`
     : ``;
 
-  const repeatingClassName = isRepeating(repeatingDays)
+  const repeatingClassName = isTaskRepeating(repeatingDays)
     ? `card--repeat`
     : ``;
 
