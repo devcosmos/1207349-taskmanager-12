@@ -65,6 +65,7 @@ export default class Task {
   _escKeyDownHandler(evt) {
     if (evt.key === `Escape`) {
       this._replaceFormToCard();
+      this._taskEditComponent.reset(this._task);
     }
   }
 
