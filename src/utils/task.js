@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export const isExpired = (dueDate) => {
   if (dueDate === null) {
     return false;
@@ -18,8 +20,12 @@ export const isTaskRepeating = (repeatingDays) => {
   return Object.values(repeatingDays).some(Boolean);
 };
 
-export const getFormattingDueDate = (date) => {
-  return date.toLocaleString(`ru-RU`, {day: `numeric`, month: `long`});
+export const getFormattingDueDate = (dueDate) => {
+  if (!(dueDate instanceof Date)) {
+    return ``;
+  }
+
+  return moment(dueDate).format(`D MMMM`);
 };
 
 const getCurrentDate = () => {
