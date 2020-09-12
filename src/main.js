@@ -3,7 +3,7 @@ import MenuView from "./view/menu";
 import FilterView from "./view/filter";
 import {generateTask} from "./mock/task";
 import {generateFilter} from "./mock/filter";
-import {renderElement} from "./utils/render";
+import {render} from "./utils/render";
 import BoardPresenter from "./presenter/board";
 import TasksModel from "./model/tasks";
 
@@ -17,7 +17,7 @@ const siteHeaderElement = siteMainElement.querySelector(`.main__control`);
 
 const boardPresenter = new BoardPresenter(siteMainElement, tasksModel);
 
-renderElement(siteHeaderElement, new MenuView(), RenderPosition.BEFOREEND);
-renderElement(siteMainElement, new FilterView(filters), RenderPosition.BEFOREEND);
+render(siteHeaderElement, new MenuView(), RenderPosition.BEFOREEND);
+render(siteMainElement, new FilterView(filters), RenderPosition.BEFOREEND);
 
 boardPresenter.init();

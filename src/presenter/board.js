@@ -1,11 +1,11 @@
 import {RenderPosition, TASK_COUNT_PER_STEP, SortType, UpdateType, UserAction} from "../const";
 import BoardView from "../view/board";
 import TasksView from "../view/tasks";
-import SortingsView from "../view/sortings";
+import SortView from "../view/sortings";
 import LoadMoreButtonView from "../view/load-more-button";
 import NoTaskView from "../view/no-task";
 import TaskPresenter from "../presenter/task";
-import {renderElement, remove} from "../utils/render";
+import {render, remove} from "../utils/render";
 import {sortTaskUp, sortTaskDown} from "../utils/task";
 
 export default class Board {
@@ -16,11 +16,12 @@ export default class Board {
     this._currentSortType = SortType.DEFAULT;
     this._taskPresenter = {};
 
+    this._sortComponent = null;
+    this._loadMoreButtonComponent = null;
+
     this._boardComponent = new BoardView();
     this._tasksComponent = new TasksView();
     this._noTaskComponent = new NoTaskView();
-    this._sortingsComponent = new SortingsView();
-    this._loadMoreButtonComponent = new LoadMoreButtonView();
 
     this._handleViewAction = this._handleViewAction.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
@@ -32,8 +33,8 @@ export default class Board {
   }
 
   init() {
-    renderElement(this._boardContainer, this._boardComponent, RenderPosition.BEFOREEND);
-    renderElement(this._boardComponent, this._tasksComponent, RenderPosition.BEFOREEND);
+    render(this._boardContainer, this._boardComponent, RenderPosition.BEFOREEND);
+    render(this._boardComponent, this._tasksComponent, RenderPosition.BEFOREEND);
 
     this._renderBoard();
   }
@@ -75,8 +76,12 @@ export default class Board {
         this._taskPresenter[data.id].init(data);
         break;
       case UpdateType.MINOR:
+        this._clearBoard();
+        this._renderBoard();
         break;
       case UpdateType.MAJOR:
+        this._clearBoard({resetRenderedTaskCount: true, resetSortType: true});
+        this._renderBoard();
         break;
     }
   }
@@ -92,7 +97,7 @@ export default class Board {
   }
 
   _renderNoTask() {
-    renderElement(this._boardComponent, this._noTaskComponent, RenderPosition.AFTERBEGIN);
+    render(this._boardComponent, this._noTaskComponent, RenderPosition.AFTERBEGIN);
   }
 
   _handleSortTypeChange(sortType) {
@@ -101,14 +106,19 @@ export default class Board {
     }
 
     this._currentSortType = sortType;
-    this._clearTaskList();
-    this._renderTaskList();
-
+    this._clearBoard({resetRenderedTaskCount: true});
+    this._renderBoard();
   }
 
-  _renderSortings() {
-    renderElement(this._boardComponent, this._sortingsComponent, RenderPosition.AFTERBEGIN);
-    this._sortingsComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
+  _renderSort() {
+    if (this._sortComponent !== null) {
+      this._sortComponent = null;
+    }
+
+    this._sortComponent = new SortView(this._currentSortType);
+    this._sortComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
+
+    render(this._boardComponent, this._sortComponent, RenderPosition.AFTERBEGIN);
   }
 
   _handleLoadMoreButtonClick() {
@@ -125,9 +135,14 @@ export default class Board {
   }
 
   _renderLoadMoreButton() {
-    renderElement(this._boardComponent, this._loadMoreButtonComponent, RenderPosition.BEFOREEND);
+    if (this._loadMoreButtonComponent !== null) {
+      this._loadMoreButtonComponent = null;
+    }
 
+    this._loadMoreButtonComponent = new LoadMoreButtonView();
     this._loadMoreButtonComponent.setClickHandler(this._handleLoadMoreButtonClick);
+
+    render(this._boardComponent, this._loadMoreButtonComponent, RenderPosition.BEFOREEND);
   }
 
   _clearTaskList() {
@@ -150,13 +165,44 @@ export default class Board {
     }
   }
 
+  _clearBoard({resetRenderedTaskCount = false, resetSortType = false} = {}) {
+    const taskCount = this._getTasks().length;
+
+    Object
+      .values(this._taskPresenter)
+      .forEach((presenter) => presenter.destroy());
+    this._taskPresenter = {};
+
+    remove(this._sortComponent);
+    remove(this._noTaskComponent);
+    remove(this._loadMoreButtonComponent);
+
+    if (resetRenderedTaskCount) {
+      this._renderedTaskCount = TASK_COUNT_PER_STEP;
+    } else {
+      this._renderedTaskCount = Math.min(taskCount, this._renderedTaskCount);
+    }
+
+    if (resetSortType) {
+      this._currentSortType = SortType.DEFAULT;
+    }
+  }
+
   _renderBoard() {
-    if (this._getTasks().every((task) => task.isArchive)) {
-      this._renderNoTask();
+    const tasks = this._getTasks();
+    const taskCount = tasks.length;
+
+    if (taskCount === 0) {
+      this._renderNoTasks();
       return;
     }
 
-    this._renderSortings();
-    this._renderTaskList();
+    this._renderSort();
+
+    this._renderTasks(tasks.slice(0, Math.min(taskCount, this._renderedTaskCount)));
+
+    if (taskCount > this._renderedTaskCount) {
+      this._renderLoadMoreButton();
+    }
   }
 }

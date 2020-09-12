@@ -1,6 +1,6 @@
 import TaskView from "../view/task";
 import TaskEditView from "../view/task-edit";
-import {renderElement, replace, remove} from "../utils/render";
+import {render, replace, remove} from "../utils/render";
 import {RenderPosition, Mode, UserAction, UpdateType} from "../const";
 
 export default class Task {
@@ -35,7 +35,7 @@ export default class Task {
     this._taskEditComponent.setFormSubmitHandler(this._handleFormSubmit);
 
     if (prevTaskComponent === null || prevTaskEditComponent === null) {
-      renderElement(this._tasksContainer, this._taskComponent, RenderPosition.BEFOREEND);
+      render(this._tasksContainer, this._taskComponent, RenderPosition.BEFOREEND);
       return;
     }
 
