@@ -1,6 +1,6 @@
 import moment from "moment";
 
-export const isExpired = (dueDate) => {
+export const isTaskExpired = (dueDate) => {
   if (dueDate === null) {
     return false;
   }
@@ -8,7 +8,7 @@ export const isExpired = (dueDate) => {
   return moment(getCurrentDate()).isAfter(dueDate, `day`);
 };
 
-export const isExpiringToday = (dueDate) => {
+export const isTaskExpiringToday = (dueDate) => {
   if (dueDate === null) {
     return false;
   }
