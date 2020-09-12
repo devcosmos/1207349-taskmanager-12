@@ -7,11 +7,13 @@ import NoTaskView from "../view/no-task";
 import TaskPresenter from "../presenter/task";
 import {render, remove} from "../utils/render";
 import {sortTaskUp, sortTaskDown} from "../utils/task";
+import {filter} from "../utils/filter";
 
 export default class Board {
-  constructor(boardContainer, tasksModel) {
+  constructor(boardContainer, tasksModel, filterModel) {
     this._boardContainer = boardContainer;
     this._tasksModel = tasksModel;
+    this._filterModel = filterModel;
     this._renderedTaskCount = TASK_COUNT_PER_STEP;
     this._currentSortType = SortType.DEFAULT;
     this._taskPresenter = {};
@@ -30,6 +32,7 @@ export default class Board {
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
 
     this._tasksModel.addObserver(this._handleModelEvent);
+    this._filterModel.addObserver(this._handleModelEvent);
   }
 
   init() {
@@ -40,14 +43,18 @@ export default class Board {
   }
 
   _getTasks() {
+    const filterType = this._filterModel.getFilter();
+    const tasks = this._tasksModel.getTasks();
+    const filtredTasks = filter[filterType](tasks);
+
     switch (this._currentSortType) {
       case SortType.DATE_UP:
-        return this._tasksModel.getTasks().slice().sort(sortTaskUp);
+        return filtredTasks.sort(sortTaskUp);
       case SortType.DATE_DOWN:
-        return this._tasksModel.getTasks().slice().sort(sortTaskDown);
+        return filtredTasks.sort(sortTaskDown);
     }
 
-    return this._tasksModel.getTasks();
+    return filtredTasks;
   }
 
   _handleModeChange() {
