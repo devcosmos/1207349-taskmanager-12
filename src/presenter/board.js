@@ -1,4 +1,4 @@
-import {RenderPosition, TASK_COUNT_PER_STEP, SortType, UpdateType, UserAction} from "../const";
+import {RenderPosition, TASK_COUNT_PER_STEP, SortType, UpdateType, UserAction, FilterType} from "../const";
 import BoardView from "../view/board";
 import TasksView from "../view/tasks";
 import SortView from "../view/sortings";
@@ -8,6 +8,7 @@ import TaskPresenter from "../presenter/task";
 import {render, remove} from "../utils/render";
 import {sortTaskUp, sortTaskDown} from "../utils/task";
 import {filter} from "../utils/filter";
+import TaskNewPresenter from "./task-new";
 
 export default class Board {
   constructor(boardContainer, tasksModel, filterModel) {
@@ -33,6 +34,8 @@ export default class Board {
 
     this._tasksModel.addObserver(this._handleModelEvent);
     this._filterModel.addObserver(this._handleModelEvent);
+
+    this._taskNewPresenter = new TaskNewPresenter(this._tasksComponent, this._handleViewAction);
   }
 
   init() {
@@ -40,6 +43,12 @@ export default class Board {
     render(this._boardComponent, this._tasksComponent, RenderPosition.BEFOREEND);
 
     this._renderBoard();
+  }
+
+  createTask() {
+    this._currentSortType = SortType.DEFAULT;
+    this._filterModel.setFilter(UpdateType.MAJOR, FilterType.ALL);
+    this._taskNewPresenter.init();
   }
 
   _getTasks() {
@@ -58,6 +67,7 @@ export default class Board {
   }
 
   _handleModeChange() {
+    this._taskNewPresenter.destroy();
     Object
       .values(this._taskPresenter)
       .forEach((presenter) => presenter.resetView());
@@ -155,6 +165,7 @@ export default class Board {
   _clearBoard({resetRenderedTaskCount = false, resetSortType = false} = {}) {
     const taskCount = this._getTasks().length;
 
+    this._taskNewPresenter.destroy();
     Object
       .values(this._taskPresenter)
       .forEach((presenter) => presenter.destroy());

@@ -7,7 +7,7 @@ const DESCRIPTION = [
   `Пройти интенсив на соточку`
 ];
 
-const generateId = () => Date.now() + parseInt(Math.random() * 10000, 10);
+export const generateId = () => Date.now() + parseInt(Math.random() * 10000, 10);
 
 const generateRandomDescription = () => {
   const randomIndex = getRandomInteger(0, DESCRIPTION.length - 1);
