@@ -5,7 +5,7 @@ export const isExpired = (dueDate) => {
     return false;
   }
 
-  return getCurrentDate().getTime() > dueDate.getTime();
+  return moment(getCurrentDate()).isAfter(dueDate, `day`);
 };
 
 export const isExpiringToday = (dueDate) => {
@@ -13,7 +13,7 @@ export const isExpiringToday = (dueDate) => {
     return false;
   }
 
-  return getCurrentDate().getTime() === dueDate.getTime();
+  return moment(dueDate).isSame(getCurrentDate(), `day`);
 };
 
 export const isTaskRepeating = (repeatingDays) => {
@@ -69,4 +69,12 @@ export const sortTaskDown = (taskA, taskB) => {
   }
 
   return taskB.dueDate.getTime() - taskA.dueDate.getTime();
+};
+
+export const isDatesEqual = (dateA, dateB) => {
+  if (dateA === null && dateB === null) {
+    return true;
+  }
+
+  return moment(dateA).isSame(dateB, `day`);
 };
