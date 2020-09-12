@@ -1,7 +1,7 @@
 import TaskView from "../view/task";
 import TaskEditView from "../view/task-edit";
 import {renderElement, replace, remove} from "../utils/render";
-import {RenderPosition, Mode} from "../const";
+import {RenderPosition, Mode, UserAction, UpdateType} from "../const";
 
 export default class Task {
   constructor(tasksContainer, changeData, changeMode) {
@@ -88,6 +88,8 @@ export default class Task {
 
   _handleFavoriteClick() {
     this._changeData(
+        UserAction.UPDATE_TASK,
+        UpdateType.MINOR,
         Object.assign(
             {},
             this._task,
@@ -100,6 +102,8 @@ export default class Task {
 
   _handleArchiveClick() {
     this._changeData(
+        UserAction.UPDATE_TASK,
+        UpdateType.MINOR,
         Object.assign(
             {},
             this._task,
@@ -111,7 +115,11 @@ export default class Task {
   }
 
   _handleFormSubmit(task) {
-    this._changeData(task);
+    this._changeData(
+        UserAction.UPDATE_TASK,
+        UpdateType.MINOR,
+        task
+    );
     this._replaceFormToCard();
   }
 }
